@@ -1,0 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 4vw;
+    margin: 2vw;
+}
+
+body{
+    background-color: #E3F2FD;
+}
+
+.logoFont {
+    text-decoration: none;
+    font-weight: 450;
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.logo {
+    display: flex;
+    align-content: center;
+    padding-left: 4px;
+    padding-right: 9px;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+    background-color: aliceblue;
+    border-radius: 8px;
+    padding-left: 4px;
+    padding-right: 9px;
+    cursor: pointer;
+}
+
+.searchBar {
+    background-image: url('https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png');
+    background-size: 15px;
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    flex: 1;
+    border-radius: 30px;
+    width: 50%;
+    height: fit-content;
+    padding: 10px;
+    padding-left: 35px;
+    border: solid 2px black;
+    font-family: 'Lexend', sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+
+/* Ensures icon stays visible on autofill */
+.searchBar:-webkit-autofill,
+.searchBar:-webkit-autofill:hover,
+.searchBar:-webkit-autofill:focus {
+    font-family: 'Lexend', sans-serif;
+    background-color: white !important;
+    background-image: url('https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png') !important;
+    background-size: 15px !important;
+    background-position: 10px center !important;
+    background-repeat: no-repeat !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.searchBar:focus {
+    border: solid 2px #209EE6;
+    outline: none;
+}
+
+select {
+    font-family: 'Lexend', sans-serif;
+    width: 8rem;
+    height: auto;
+    border: solid 2px black;
+    border-radius: 30px;
+    background-color: white;
+    color: black;
+    padding: 3px;
+    padding-left: 12px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: -0.05rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-right: 16.8px;
+}
+
+select:focus {
+    border: solid 2px #209EE6;
+    outline: none;
+}
+
+option {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mainContainer {
+    display: flex;
+    gap: 2vw;
+    justify-content: space-evenly;
+    margin: 2vw;
+}
+
+.card {
+    width: 14rem;
+    margin: 10px;
+    transition: 0.3s;
+}
+
+.cardContainer {
+    transition: transform 1s ease; /* Adjust the duration here */
+    width: 300px; /* or whatever fits */
+    height: 65vh; /* full viewport height */
+    overflow-y: auto; /* vertical scroll */
+    background-color: #e6f4ff; /* or match your design */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.cardContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.bigView {
+    max-width: 75%;
+    margin: 10px;
+    height: 26.6rem; /* Adjust height as needed */
+    padding: 0.2rem;
+    border: solid 3px #209EE6;
+    border-radius: 9px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    background-color: #FFFFFF;
+}
+
+.bigView::-webkit-scrollbar {
+    width: 12px;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.bigView::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+}
+
+.bigView::-webkit-scrollbar-track {
+    border: solid 2px gray;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.bigView h3,
+p {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.cardSelected {
+    width: 14rem;
+    margin: 10px;
+    transition: 0.3s;
+    background-color: #FFFFFF;
+
+    >.cardHeader {
+        border-color: #209EE6;
+        background-color: #209EE6;
+    }
+
+    >.cardBody {
+        border-color: #209EE6;
+        background-color: #FFFFFF;
+    }
+}
+
+.inactiveButtonContainer {
+    display: none;
+    gap: 1vw;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.card:hover {
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+    transform: scale(1.01);
+    cursor: pointer;
+
+    .cardHeader {
+        border-color: #3ab5ff;
+        background-color: #3ab5ff;
+    }
+
+    .cardBody {
+        border-color: #3ab5ff;
+        background-color: #FFFFFF;
+    }
+
+    .inactiveButtonContainer
+ {
+        transition: 0.3s;
+        display: flex;
+    }
+}
+
+.cardSelected:hover {
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+    transform: scale(1.01);
+    cursor: pointer;
+
+    >.cardHeader {
+        border-color: #3ab5ff;
+        background-color: #3ab5ff;
+    }
+
+    >.cardBody {
+        border-color: #3ab5ff;
+        background-color: #FFFFFF;
+    }
+}
+
+.applyButton {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: small;
+    border: none;
+    border-radius: 15px;
+    text-align: center;
+    align-self: center;
+    justify-self: center;
+    background-color: #209EE6;
+    color: white;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.applyButton:hover {
+    transform: scale(1.05);
+    background-color: #3ab5ff;
+    cursor: pointer;
+}
+
+.activeButtonContainer {
+    display: flex;
+    gap: 1vw;
+    align-items: center;
+}
+
+.bookmark {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7OG2XjgLWJeIahbiwgE5Csim5Wo6mgRMdw&s";
+    transition: 0.3s;
+    background-color: #E3F2FD;
+}
+
+.bookmark:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.cardHeader {
+    border-bottom: solid 1.5px black;
+    border-top: solid 2.5px black;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-left: solid 2px black;
+    border-right: solid 2px black;
+    background-color: gray;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: small;
+    color: white;
+}
+
+.cardBody {
+    padding-top: 0px;
+    margin-top: 0px;
+    border-top: solid 1px black;
+    border-bottom: solid 2px black;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left: solid 2px black;
+    border-right: solid 2px black;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: smaller;
+    background-color: #FFFFFF;
+}
+
+.card h3,
+p {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.cardSelected h3,
+p {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.icon {
+    max-width: 2.5rem;
+    max-height: 1.4rem;
+    padding: fit-content;
+    border: solid 2px #E3F2FD;
+    background-color: #E3F2FD;
+    border-radius: 60px;
+    transition: 0.3s;
+}
+
+.icons {
+    display: flex;
+    gap: 1.5vw;
+}
+
+.icon:hover {
+    padding: fit-content;
+    border-radius: 60px;
+    transition: 0.3s;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.logoImg {
+    width: 6rem;
+    height: auto;
+    max-width: 200px;
+}
+
+.helpIcon {
+    display: flex;
+    justify-content: end;
+    align-items: center;;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;;
+}
+.help{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50px;
+    background-color: white;
+}
+
+.help:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    border-radius: 50px;
+}
+
+.logoHref{
+    text-decoration: none;
+    font-family: inherit;
+    color:inherit;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 55%; /* Ensure it takes the full width of the parent */
+}
+
+.pageTitle {
+    text-align: center;
+    text-decoration: none;
+    font-weight: 450;
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+
+.dropdownOption:hover {
+    background-color: #209EE6;
+    color: white;
+    cursor: pointer; 
+}
+.dropdown{
+    display: none;
+    position: absolute; 
+    z-index: 100000; 
+    max-height: 498.333px; 
+    right: 5%; 
+    top: 15%;
+    background-color: white;
+    width: fit-content;
+    border: solid 2px black;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
+}
+.dropdownOptions{
+    border: solid 2px #209EE6;
+    border-radius: 8px;
+    width: 115px;
+    justify-content: center;
+}
+
+.dropdownOption{
+    border-bottom: solid 2px #209EE6;
+    padding: 0px;
+    margin:0px;
+    text-align: left;
+}
+p{
+    margin: 0px;
+    font-family: 'Lexend', sans-serif;
+}
+
+.jobPosition{
+    font-size: clamp(12px, 2.5vw, 18px); 
+    font-size: 100%;
+}
