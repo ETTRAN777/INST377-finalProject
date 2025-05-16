@@ -52,6 +52,7 @@ function bookmark() {
 }
 
 function populateDropdown(dropdown, items, defaultText) {
+  if (!dropdown) return; // Add null check
   dropdown.innerHTML = '';
   const defaultOption = document.createElement("option");
   defaultOption.disabled = false;
@@ -67,6 +68,18 @@ function populateDropdown(dropdown, items, defaultText) {
     option.textContent = label;
     option.value = value;
     dropdown.appendChild(option);
+  });
+}
+
+function initializeBookmarks() {
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  document.querySelectorAll('.card').forEach(card => {
+    const bookmarkBtn = card.querySelector('.bookmark');
+    if (bookmarkBtn) {
+      const jobId = card.dataset.jobId;
+      const isBookmarked = bookmarks.some(b => b.id === jobId);
+      bookmarkBtn.src = isBookmarked ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
+    }
   });
 }
 
@@ -114,12 +127,32 @@ function createJobCard(job) {
   const template = document.getElementById('jobCardTemplate');
   if (!template) return;
   const clone = template.content.cloneNode(true);
+  const card = clone.querySelector('.card');
+  
+  // Set card metadata
+  card.dataset.jobId = job.id;
+  card.dataset.description = job.description || 'No description provided.';
+  card.dataset.salary = job.salary_min || job.salary_max ? `${job.salary_min}-${job.salary_max}` : 'N/A';
+  card.dataset.date = job.created || 'N/A';
+  card.dataset.url = job.redirect_url || '#';
+
+  // Populate basic info
   clone.querySelector('.jobPositionValue').textContent = job.title || '';
   clone.querySelector('.companyValue').textContent = job.company?.display_name || '';
   clone.querySelector('.locationValue').textContent = job.location?.area?.[1] || '';
 
-  // Add click event to update bigView with this job's details and toggle bigView visibility
-  clone.querySelector('.card').addEventListener('click', function (event) {
+  // Bookmark button setup
+  const bookmarkBtn = clone.querySelector('.bookmark');
+  if (bookmarkBtn) {
+    bookmarkBtn.addEventListener('click', saveBookmark);
+    // Initial state set in initializeBookmarks()
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || []);
+    bookmarkBtn.src = bookmarks.some(b => b.id === job.id) ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
+  }
+
+
+  // Card click handler
+  card.addEventListener('click', function(event) {
     if (event.target.classList.contains('bookmark')) return;
     let salaryText = '';
     if (job.salary_min && job.salary_max && job.salary_min === job.salary_max) {
@@ -134,12 +167,12 @@ function createJobCard(job) {
       job.created || 'N/A',
       job.redirect_url || '#'
     );
-    // Toggle card selection and bigView visibility
+
+    // Toggle selection
     const allCards = document.querySelectorAll('.card');
     const bigView = document.querySelector('.bigView');
     if (this.classList.contains('cardSelected')) {
       this.classList.remove('cardSelected');
-      this.classList.add('card');
       if (bigView) bigView.style.display = 'none';
     } else {
       allCards.forEach(c => c.classList.remove('cardSelected'));
@@ -149,9 +182,7 @@ function createJobCard(job) {
   });
 
   const cardContainer = document.querySelector('.cardContainer');
-  if (cardContainer) {
-    cardContainer.appendChild(clone);
-  }
+  if (cardContainer) cardContainer.appendChild(clone);
 }
 
 function populateJobCards(jobs) {
@@ -159,9 +190,11 @@ function populateJobCards(jobs) {
   if (!cardContainer) return;
   cardContainer.innerHTML = '';
   jobs.forEach(job => createJobCard(job));
+  initializeBookmarks(); // Initialize after populating
 }
 
 async function fetchAllJobsAndPopulateCards() {
+  if (window.location.pathname.endsWith('bookmarks.html')) return;
   const appId = '583d7467';
   const appKey = 'a3731e89eb3d38f871e53fbe22a4d724';
   const baseUrl = 'https://api.adzuna.com/v1/api/jobs/us/search/';
@@ -239,23 +272,117 @@ async function fetchAllJobsAndPopulateCards() {
   populateJobCards(allJobs);
 
   // Populate dropdowns using sets for uniqueness
-  const jobSet = new Set();
-  const jobs = [];
-  const citySet = new Set();
-  const cities = [];
-  allJobs.forEach(job => {
-    if (job.title && !jobSet.has(job.title)) {
-      jobs.push([job.title, job.title]);
-      jobSet.add(job.title);
-    }
-    const city = job.location?.area?.[1];
-    if (city && !citySet.has(city)) {
-      cities.push([city, city]);
-      citySet.add(city);
-    }
-  });
-  jobs.sort((a, b) => a[1].localeCompare(b[1]));
-  cities.sort((a, b) => a[1].localeCompare(b[1]));
-  populateDropdown(document.getElementById("position"), jobs, "Position:");
-  populateDropdown(document.getElementById("location"), cities, "Location:");
+  const positionDropdown = document.getElementById("position");
+  const locationDropdown = document.getElementById("location");
+
+  if (positionDropdown && locationDropdown) {
+    // FIX 2: Move dropdown logic inside this condition
+    const jobSet = new Set();
+    const jobs = [];
+    const citySet = new Set();
+    const cities = [];
+    
+    allJobs.forEach(job => {
+      if (job.title && !jobSet.has(job.title)) {
+        jobs.push([job.title, job.title]);
+        jobSet.add(job.title);
+      }
+      const city = job.location?.area?.[1];
+      if (city && !citySet.has(city)) {
+        cities.push([city, city]);
+        citySet.add(city);
+      }
+    });
+
+    jobs.sort((a, b) => a[1].localeCompare(b[1]));
+    cities.sort((a, b) => a[1].localeCompare(b[1]));
+    
+    // FIX 3: Add null checks in populateDropdown calls
+    populateDropdown(positionDropdown, jobs, "Position:");
+    populateDropdown(locationDropdown, cities, "Location:");
+  }
 }
+
+function updateFilters() {
+  if (!window.location.pathname.endsWith('bookmarks.html')) {
+    fetchAllJobsAndPopulateCards();
+  }
+}
+
+// Separate function for search handling
+function handleSearch(event) {
+  if (event.key === "Enter" && !window.location.pathname.endsWith('bookmarks.html')) {
+    event.preventDefault();
+    fetchAllJobsAndPopulateCards();
+  }
+}
+
+function saveBookmark(event) {
+  event.stopPropagation();
+  const bookmarkElement = this;
+  const isBookmarked = bookmarkElement.src.includes('bookmarkEmpty.png');
+  
+  // Toggle visual state
+  bookmarkElement.src = isBookmarked ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
+
+  // Clone the card element
+  const card = this.closest('.card');
+  const jobId = card.dataset.jobId;
+
+  // Update localStorage
+  let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  if (isBookmarked) {
+    const cardClone = card.cloneNode(true);
+    cardClone.querySelector('.bookmark').remove();
+    bookmarks.push({
+      id: jobId,
+      html: cardClone.outerHTML
+    });
+  } else {
+    bookmarks = bookmarks.filter(b => b.id !== jobId);
+  }
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+  // Trigger storage event for cross-tab updates
+  const updateEvent = new Event('storage');
+  window.dispatchEvent(updateEvent);
+}
+
+function displayBookmarks() {
+  const container = document.getElementById('bookmarksContainer');
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  
+  container.innerHTML = '';
+  bookmarks.forEach(bookmark => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = bookmark.html;
+    container.appendChild(tempDiv.firstElementChild);
+  });
+
+  if (bookmarks.length === 0) {
+    container.innerHTML = '<p>No bookmarked jobs found</p>';
+  }
+}
+
+// Add storage listener
+window.addEventListener('storage', () => displayBookmarks());
+document.addEventListener('DOMContentLoaded', displayBookmarks);
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if we're on bookmarks page
+  const isBookmarksPage = window.location.pathname.endsWith('bookmarks.html');
+  
+  if (isBookmarksPage) {
+    displayBookmarks();
+  } else {
+    // Only run job search logic on non-bookmarks pages
+    fetchAllJobsAndPopulateCards();
+    
+    // Initialize dropdowns and other job search features
+    document.getElementById("position")?.addEventListener("change", updateFilters);
+    document.getElementById("location")?.addEventListener("change", updateFilters);
+    document.getElementById("date")?.addEventListener("change", updateFilters);
+    document.getElementById("salary")?.addEventListener("change", updateFilters);
+    document.getElementById("mainSearch")?.addEventListener("keydown", handleSearch);
+  }
+});
