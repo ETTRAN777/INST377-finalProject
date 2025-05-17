@@ -260,38 +260,41 @@ async function fetchAllJobsAndPopulateCards() {
     }
   }
   console.log(`Total jobs fetched: ${allJobs.length}`);
+  if (allJobs.length > 0) {
+    console.log('Sample job object:', allJobs[0]);
+  }
+
   populateJobCards(allJobs);
 
   // Populate dropdowns using sets for uniqueness
   const positionDropdown = document.getElementById("position");
   const locationDropdown = document.getElementById("location");
 
-  if (positionDropdown && locationDropdown) {
-    // FIX 2: Move dropdown logic inside this condition
-    const jobSet = new Set();
-    const jobs = [];
-    const citySet = new Set();
-    const cities = [];
-    
-    allJobs.forEach(job => {
-      if (job.title && !jobSet.has(job.title)) {
-        jobs.push([job.title, job.title]);
-        jobSet.add(job.title);
-      }
-      const city = job.location?.area?.[1];
-      if (city && !citySet.has(city)) {
-        cities.push([city, city]);
-        citySet.add(city);
-      }
-    });
-
-    jobs.sort((a, b) => a[1].localeCompare(b[1]));
-    cities.sort((a, b) => a[1].localeCompare(b[1]));
-    
-    // FIX 3: Add null checks in populateDropdown calls
-    populateDropdown(positionDropdown, jobs, "Position:");
-    populateDropdown(locationDropdown, cities, "Location:");
+  if (!positionDropdown || !locationDropdown) {
+    console.warn("Dropdowns with IDs 'position' and/or 'location' not found in the DOM when attempting to populate them.");
+    return;
   }
+
+  // Only run dropdown logic if both dropdowns exist
+  const jobSet = new Set();
+  const jobs = [];
+  const citySet = new Set();
+  const cities = [];
+  allJobs.forEach(job => {
+    if (job.title && !jobSet.has(job.title)) {
+      jobs.push([job.title, job.title]);
+      jobSet.add(job.title);
+    }
+    const city = job.location?.area?.[1];
+    if (city && !citySet.has(city)) {
+      cities.push([city, city]);
+      citySet.add(city);
+    }
+  });
+  jobs.sort((a, b) => a[1].localeCompare(b[1]));
+  cities.sort((a, b) => a[1].localeCompare(b[1]));
+  populateDropdown(positionDropdown, jobs, "Position:");
+  populateDropdown(locationDropdown, cities, "Location:");
 }
 
 function updateFilters() {
@@ -352,4 +355,16 @@ function safeGetBookmarks() {
     localStorage.setItem('bookmarks', '[]');
     return [];
   }
+}
+
+function initializeBookmarks() {
+  const bookmarks = safeGetBookmarks();
+  document.querySelectorAll('.card').forEach(card => {
+    const bookmarkBtn = card.querySelector('.bookmark');
+    if (bookmarkBtn) {
+      const jobId = card.dataset.jobId;
+      const isBookmarked = bookmarks.some(b => b.id === jobId);
+      bookmarkBtn.src = isBookmarked ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
+    }
+  });
 }
