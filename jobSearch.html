@@ -12,14 +12,18 @@
 
   <template id="jobCardTemplate">
     <div class="card">
-      <img src="bookmarkEmpty.png" class="bookmark" 
-      style="position: absolute; right: 10px; top: 10px; cursor: pointer; width: 24px;">
       <div class="cardHeader">
         <h3 class="jobPosition"><span class="jobPositionValue"></span></h3>
       </div>
       <div class="cardBody">
         <p class="company">Company: <span class="companyValue"></span></p>
         <p class="location">Location: <span class="locationValue"></span></p>
+        <div class="inactiveButtonContainer">
+        <form target="blank" action="">
+          <button class="applyButton">Apply</button>
+        </form>
+        <input type="image" class="bookmark" src="bookmarkEmpty.png"/>
+      </div>
       </div>
     </div>
   </template>

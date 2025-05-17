@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const accountIcon = document.querySelector('.account');
   const dropdown = document.querySelector('.dropdown');
   const bigView = document.querySelector('.bigView');
+  bigView.style.display = 'none'; // Hide big view initially
+
   const mainSearch = document.getElementById('mainSearch');
   const positionDropdown = document.getElementById("position");
   const locationDropdown = document.getElementById("location");
@@ -71,18 +73,6 @@ function populateDropdown(dropdown, items, defaultText) {
   });
 }
 
-function initializeBookmarks() {
-  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-  document.querySelectorAll('.card').forEach(card => {
-    const bookmarkBtn = card.querySelector('.bookmark');
-    if (bookmarkBtn) {
-      const jobId = card.dataset.jobId;
-      const isBookmarked = bookmarks.some(b => b.id === jobId);
-      bookmarkBtn.src = isBookmarked ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
-    }
-  });
-}
-
 function updateBigView(aboutValue, descriptionValue, salaryValue, datePostedValue, applyButtonValue) {
   const about = document.getElementById("aboutValue");
   const description = document.getElementById("descriptionValue");
@@ -140,13 +130,14 @@ function createJobCard(job) {
   clone.querySelector('.jobPositionValue').textContent = job.title || '';
   clone.querySelector('.companyValue').textContent = job.company?.display_name || '';
   clone.querySelector('.locationValue').textContent = job.location?.area?.[1] || '';
+  clone.querySelector('.applyForm').action = job.redirect_url || '#';
 
   // Bookmark button setup
   const bookmarkBtn = clone.querySelector('.bookmark');
   if (bookmarkBtn) {
     bookmarkBtn.addEventListener('click', saveBookmark);
-    // Initial state set in initializeBookmarks()
-    const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || []);
+    // Use safeGetBookmarks instead of JSON.parse
+    const bookmarks = safeGetBookmarks();
     bookmarkBtn.src = bookmarks.some(b => b.id === job.id) ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
   }
 
@@ -330,7 +321,7 @@ function saveBookmark(event) {
   const jobId = card.dataset.jobId;
 
   // Update localStorage
-  let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  let bookmarks = safeGetBookmarks();
   if (isBookmarked) {
     const cardClone = card.cloneNode(true);
     cardClone.querySelector('.bookmark').remove();
@@ -348,41 +339,17 @@ function saveBookmark(event) {
   window.dispatchEvent(updateEvent);
 }
 
-function displayBookmarks() {
-  const container = document.getElementById('bookmarksContainer');
-  const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-  
-  container.innerHTML = '';
-  bookmarks.forEach(bookmark => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = bookmark.html;
-    container.appendChild(tempDiv.firstElementChild);
-  });
 
-  if (bookmarks.length === 0) {
-    container.innerHTML = '<p>No bookmarked jobs found</p>';
+
+function safeGetBookmarks() {
+  try {
+    const raw = localStorage.getItem('bookmarks');
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
+  } catch (e) {
+    localStorage.setItem('bookmarks', '[]');
+    return [];
   }
 }
-
-// Add storage listener
-window.addEventListener('storage', () => displayBookmarks());
-document.addEventListener('DOMContentLoaded', displayBookmarks);
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Check if we're on bookmarks page
-  const isBookmarksPage = window.location.pathname.endsWith('bookmarks.html');
-  
-  if (isBookmarksPage) {
-    displayBookmarks();
-  } else {
-    // Only run job search logic on non-bookmarks pages
-    fetchAllJobsAndPopulateCards();
-    
-    // Initialize dropdowns and other job search features
-    document.getElementById("position")?.addEventListener("change", updateFilters);
-    document.getElementById("location")?.addEventListener("change", updateFilters);
-    document.getElementById("date")?.addEventListener("change", updateFilters);
-    document.getElementById("salary")?.addEventListener("change", updateFilters);
-    document.getElementById("mainSearch")?.addEventListener("keydown", handleSearch);
-  }
-});
