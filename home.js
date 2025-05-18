@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         strings: [
             'Find Your Dream Job',
             'Connect with Employers',
-            'Build Your Career'
+            'Build Your Career',
         ],
         typeSpeed: 50,
         backSpeed: 30,

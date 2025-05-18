@@ -1,27 +1,6 @@
-function safeGetBookmarks() {
-  try {
-    const raw = localStorage.getItem('bookmarks');
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed;
-  } catch (e) {
-    localStorage.setItem('bookmarks', '[]');
-    return [];
-  }
-}
 
-function initializeBookmarks() {
-  const bookmarks = safeGetBookmarks();
-  document.querySelectorAll('.card').forEach(card => {
-    const bookmarkBtn = card.querySelector('.bookmark');
-    if (bookmarkBtn) {
-      const jobId = card.dataset.jobId;
-      const isBookmarked = bookmarks.some(b => b.id === jobId);
-      bookmarkBtn.src = isBookmarked ? 'bookmarkFull.png' : 'bookmarkEmpty.png';
-    }
-  });
-}
+
+
 
 function displayBookmarks() {
   const container = document.getElementById('bookmarksContainer');
