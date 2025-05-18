@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+  <div class="header">
+    <a class="logoHref" href="jobSearch.html">
+      <div class="logo">
+        <img class="logoImg" src="train.png">
+        <h3 class="logoFont">&nbsp;Job Junction</h3>
+      </div>
+    </a>
+  </div>
+  <div class="mainContainer" style="justify-content: center; align-items: flex-start; min-height: 70vh;">
+    <div class="auth-container" style="width: 100%; max-width: 400px; margin: 0 auto;">
+      <div class="auth-box" id="loginBox" style="display: block; background: #fff; border-radius: 16px; box-shadow: 0 0 10px 0 rgba(0,0,0,0.08); padding: 2rem; margin-bottom: 2rem;">
+        <h2 style="font-family: 'Lexend Deca', sans-serif; text-align: center;">Welcome Back</h2>
+        <form class="auth-form" id="loginForm">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" required style="width: 100%; margin-bottom: 1rem; border-radius: 30px; border: 2px solid #209EE6; padding: 0.5rem; font-family: 'Lexend', sans-serif;">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" required style="width: 100%; margin-bottom: 1rem; border-radius: 30px; border: 2px solid #209EE6; padding: 0.5rem; font-family: 'Lexend', sans-serif;">
+          <button type="submit" class="auth-btn applyButton" style="width: 100%;">Log In</button>
+        </form>
+        <p class="switch-text" style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="#" id="showSignup" style="color: #209EE6; text-decoration: underline;">Sign up</a></p>
+      </div>
+      <div class="auth-box" id="signupBox" style="display:none; background: #fff; border-radius: 16px; box-shadow: 0 0 10px 0 rgba(0,0,0,0.08); padding: 2rem;">
+        <h2 style="font-family: 'Lexend Deca', sans-serif; text-align: center;">Create Account</h2>
+        <form class="auth-form" id="signupForm">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" required style="width: 100%; margin-bottom: 1rem; border-radius: 30px; border: 2px solid #209EE6; padding: 0.5rem; font-family: 'Lexend', sans-serif;">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" required style="width: 100%; margin-bottom: 1rem; border-radius: 30px; border: 2px solid #209EE6; padding: 0.5rem; font-family: 'Lexend', sans-serif;">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" name="confirm" required style="width: 100%; margin-bottom: 1rem; border-radius: 30px; border: 2px solid #209EE6; padding: 0.5rem; font-family: 'Lexend', sans-serif;">
+          <button type="submit" class="auth-btn applyButton" style="width: 100%;">Sign Up</button>
+        </form>
+        <p class="switch-text" style="text-align: center; margin-top: 1rem;">Already have an account? <a href="#" id="showLogin" style="color: #209EE6; text-decoration: underline;">Log in</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="helpIcon">
+    <a href="help.html"><img class="help" src="https://static.thenounproject.com/png/1009849-200.png"></a>
+  </div>
+<script>
+    const showSignup = document.getElementById('showSignup');
+    const showLogin = document.getElementById('showLogin');
+    const signupBox = document.getElementById('signupBox');
+    const loginBox = document.getElementById('loginBox');
+
+    showSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginBox.style.display = 'none';
+        signupBox.style.display = 'block';
+    });
+
+    showLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupBox.style.display = 'none';
+        loginBox.style.display = 'block';
+    });
+</script>
+</body>
+</html>
