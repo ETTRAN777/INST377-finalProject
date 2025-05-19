@@ -21,15 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Passwords do not match!');
             return;
         }
+        // Add your signup logic here
     });
 
     // Add Supabase auth initialization (ADD IN)
-    
-    const SUPABASE_URL = 'https://luspwsueakmvkrnwkfhc.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1c3B3c3VlYWttdmtybndrZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1MTQ5NDAsImV4cCI6MjA2MzA5MDk0MH0.p370rJYHmVaDZSrjOcPvAiWi-Moq2E7G92OTBlqwkVQ';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    //const SUPABASE_URL = 'https://luspwsueakmvkrnwkfhc.supabase.co';
+    //const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1c3B3c3VlYWttdmtybndrZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1MTQ5NDAsImV4cCI6MjA2MzA5MDk0MH0.p370rJYHmVaDZSrjOcPvAiWi-Moq2E7G92OTBlqwkVQ';
+    //const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Auth form submissions
+    /*
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (error) alert(error.message);
         else alert('Confirmation email sent!');
     });
+    */
 });
 
 const swiper = new Swiper('.background-slider', {
