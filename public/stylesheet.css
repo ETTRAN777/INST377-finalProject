@@ -121,7 +121,7 @@ option {
     width: 300px; /* or whatever fits */
     height: 65vh; /* full viewport height */
     overflow-y: auto; /* vertical scroll */
-    background-color: #e6f4ff; /* or match your design */
+   /* background-color: #e6f4ff; /* or match your design */
     padding: 10px;
     box-sizing: border-box;
 }
