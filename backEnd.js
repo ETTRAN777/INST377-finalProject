@@ -13,6 +13,10 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/home.html');
+});
+
 app.get('/users', async (req, res) => {
     console.log('Attempting to GET all users')
     const { data, error } = await supabaseClient.from('users').select();
