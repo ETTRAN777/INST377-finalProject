@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Passwords do not match!');
             return;
         }
-        // Add your signup logic here
     });
 
     // Add Supabase auth initialization (ADD IN)
