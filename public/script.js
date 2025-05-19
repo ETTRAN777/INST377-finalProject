@@ -188,10 +188,8 @@ function populateJobCards(jobs) {
 
 async function fetchAllJobsAndPopulateCards() {
   if (window.location.pathname.endsWith('bookmarks.html')) return;
-  const dotenv = require('dotenv');
-  dotenv.config();
-  const appId = process.env.ADZUNA_ID;
-  const appKey = process.env.ADZUNA_KEY;
+  const appId = '583d7467';
+  const appKey = 'a3731e89eb3d38f871e53fbe22a4d724';
   const baseUrl = 'https://api.adzuna.com/v1/api/jobs/us/search/';
   const category = 'it-jobs';
   const resultsPerPage = 50;

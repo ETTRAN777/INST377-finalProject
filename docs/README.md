@@ -1,9 +1,9 @@
 # INST377-finalProject
 
-# Job Junction 🚂
+# Job Junction
 A modern job search platform connecting job seekers with opportunities across the tech industry.
 
-## Features ✨
+## Features
 
 Job Junction is a web application that provides:
 - **Job Search**: Real-time job listings from Adzuna
@@ -23,19 +23,23 @@ Job Junction is a web application that provides:
 ## Installation
 
 ## Clone repository
-
+  git clone https://github.com/ETTRAN777/INST377-finalProject.git
 
 ## Install dependencies
-
-
+npm init
+npm install express
+npm install nodemon
+npm install dotenv
+npm install body-parser
+npm install supabase
 ## Start development server
-
+npm start
 
 ## Environment Variables (.env)
-- SUPABASE_URL=
-- SUPABASE_KEY=
-- ADZUNA_API_ID=
-- ADZUNA_API_KEY=
+- SUPABASE_URL= process.env.SUPABASE_URL
+- SUPABASE_KEY= process.env.SUPABASE_KEY
+- ADZUNA_API_ID= id in script.js
+- ADZUNA_API_KEY= key in script.js
 
 ## API Documentation
 
@@ -52,25 +56,30 @@ Job Junction is a web application that provides:
 | POST   | `/auth/signup` | `{email, password}`   | Create new user     |
 | POST   | `/auth/login`  | `{email, password}`   | Authenticate user   |
 
-## Known Issues ⚠️
+## Known Issues
 
-| Issue                  | Affected Area       |
-|------------------------|---------------------|
-|                         |         |
-| Jobsearch Load Time       | Job Search Page         | 
-|                        | Resume parsing      |
-
-
+| Issue                      | Affected Area       |
+|----------------------------|---------------------|
+|                            |                     |
+| Jobsearch Load Time        | Job Search Page     |
+|------------------------    |---------------------| 
+| Bookmark database retreival| Bookmarks Page      |
+|                            |                     |
+|----------------------------|---------------------|
+| Bad formatting on salary   |                     |
+| and date posted filters    | Job Search Page     |
 
 ## Roadmap 🗺️
 ### 2025
+- Fix search filters
+- Connect bookmark database for bookmarks across devices
+
+### 2026
 - Advanced search filters
 - Salary comparison tool
 
-### 2026
-- Mobile app development
+### 2027
+Mobile app development
 - Interview preparation toolkit
 - Company review system
-
-### 2027
 - AI-powered job matching
